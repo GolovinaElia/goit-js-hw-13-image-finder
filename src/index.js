@@ -3,27 +3,39 @@ import './styles.css';
 import ImagesApiService from './js/apiService';
 import getRefs from './js/get-refs';
 import imgCard from './templates/card-img.hbs';
+import LoadMoreBtn from './js/load-btn';
 
 const imagesApiService = new ImagesApiService();
 const refs = getRefs();
+const loadMoreBtn = new LoadMoreBtn({
+    selector: '[data-action="load-more"]',
+    hidden: true
+});
 
-refs.inputRef.addEventListener('input', onSearch)
-refs.btnRef.addEventListener('click', onLoadMore)
+refs.inputRef.addEventListener('input', onSearch);
+loadMoreBtn.refs.button.addEventListener('click', fetchHits);
+refs.scrollImg.addEventListener('click', imgScroll);
 
 function onSearch(event) {
     event.preventDefault();
-    clearimgMarkup();
     imagesApiService.query = event.currentTarget.elements.query.value;
-
-//     if (imagesApiService.query === '') {
-//         return alert('Please enter your request');
-// }
+    clearimgMarkup();
+    loadMoreBtn.show();
     imagesApiService.resetPage();
-    imagesApiService.fetchImages().then(imgMarkup);
+    clearimgMarkup();
+    fetchHits();
+
+    if (imagesApiService.query === '') {
+        return alert('Please enter your request');
+}
 }
 
-function onLoadMore() {
-imagesApiService.fetchImages().then(imgMarkup);
+function fetchHits() {
+ loadMoreBtn.disable();
+    imagesApiService.fetchImages().then(hits => {
+        imgMarkup(hits);
+        loadMoreBtn.enable();
+    });
 }
 
 function imgMarkup(hits) {
@@ -33,11 +45,10 @@ refs.galleryRef.insertAdjacentHTML('beforeend', imgCard(hits));
 function clearimgMarkup() {
     refs.galleryRef.innerHTML = '';
 }
-window.scrollTo({
-  top: 100,
-  left: 100,
-  behavior: 'smooth'
-});
-// function imgScroll() {
-//     const totalHeight = 
-// }
+
+function imgScroll(e) {
+    e.preventDefault();
+    const blockID
+    // body.animate({ scrollTop: 0 }, 800);
+    // html.animate({ scrollTop: 0 }, 800);
+}
