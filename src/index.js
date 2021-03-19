@@ -2,18 +2,34 @@ import './styles.css';
 
 import ImagesApiService from './js/apiService';
 import getRefs from './js/get-refs';
+import imgCard from './templates/card-img.hbs';
+
 const imagesApiService = new ImagesApiService();
 const refs = getRefs();
 
 refs.inputRef.addEventListener('input', onSearch)
-refs.buttonRef.addEventListener('click', onLoadMore)
-let searchQuery;
-function onSearch(e) {
-    e.preventDefault();
-    imagesApiService.query = e.currentTarget.elements.query.value;
-    imagesApiService.fetchImages();
+refs.btnRef.addEventListener('click', onLoadMore)
+
+function onSearch(event) {
+    event.preventDefault();
+    clearimgMarkup();
+    imagesApiService.query = event.currentTarget.elements.query.value;
+
+    if (imagesApiService.query === '') {
+        return alert('Please enter your request');
+}
+    imagesApiService.resetPage();
+    imagesApiService.fetchImages().then(imgMarkup);
 }
 
 function onLoadMore() {
-imagesApiService.fetchImages();
+imagesApiService.fetchImages().then(imgMarkup);
+}
+
+function imgMarkup(hits) {
+refs.galleryRef.insertAdjacentHTML('beforeend', imgCard(hits));
+}
+
+function clearimgMarkup() {
+    refs.galleryRef.innerHTML = '';
 }
