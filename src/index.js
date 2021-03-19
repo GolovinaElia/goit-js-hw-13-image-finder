@@ -15,9 +15,9 @@ function onSearch(event) {
     clearimgMarkup();
     imagesApiService.query = event.currentTarget.elements.query.value;
 
-    if (imagesApiService.query === '') {
-        return alert('Please enter your request');
-}
+//     if (imagesApiService.query === '') {
+//         return alert('Please enter your request');
+// }
     imagesApiService.resetPage();
     imagesApiService.fetchImages().then(imgMarkup);
 }
@@ -33,3 +33,11 @@ refs.galleryRef.insertAdjacentHTML('beforeend', imgCard(hits));
 function clearimgMarkup() {
     refs.galleryRef.innerHTML = '';
 }
+window.scrollTo({
+  top: 100,
+  left: 100,
+  behavior: 'smooth'
+});
+// function imgScroll() {
+//     const totalHeight = 
+// }
