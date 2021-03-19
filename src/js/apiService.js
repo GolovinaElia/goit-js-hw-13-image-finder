@@ -16,7 +16,6 @@ export default class ImagesApiService {
             this.incrementPage();
             return hits;
         })
-         .catch()
     }
     incrementPage() {
         this.page += 1;

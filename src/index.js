@@ -14,7 +14,6 @@ const loadMoreBtn = new LoadMoreBtn({
 
 refs.inputRef.addEventListener('input', onSearch);
 loadMoreBtn.refs.button.addEventListener('click', fetchHits);
-refs.scrollImg.addEventListener('click', imgScroll);
 
 function onSearch(event) {
     event.preventDefault();
@@ -28,7 +27,7 @@ function onSearch(event) {
     if (imagesApiService.query === '') {
         return alert('Please enter your request');
 }
-}
+};
 
 function fetchHits() {
  loadMoreBtn.disable();
@@ -36,7 +35,7 @@ function fetchHits() {
         imgMarkup(hits);
         loadMoreBtn.enable();
     });
-}
+};
 
 function imgMarkup(hits) {
 refs.galleryRef.insertAdjacentHTML('beforeend', imgCard(hits));
@@ -46,9 +45,17 @@ function clearimgMarkup() {
     refs.galleryRef.innerHTML = '';
 }
 
-function imgScroll(e) {
-    e.preventDefault();
-    const blockID
-    // body.animate({ scrollTop: 0 }, 800);
-    // html.animate({ scrollTop: 0 }, 800);
+const imgScroll = (h) => {
+    const totalHeight = document.documentElement.clientHeight * imagesApiService.page;
+    let i = h || 0;
+    if (i < totalHeight) {
+        setTimeout(() => {
+            window.scrollTo(0, i);
+            window.scrollTo({
+  behavior: 'smooth'
+});
+            imgScroll(i + 12);
+        }, 12)
+    }
 }
+loadMoreBtn.refs.button.addEventListener('click', () => imgScroll());
