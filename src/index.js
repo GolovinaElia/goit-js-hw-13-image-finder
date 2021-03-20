@@ -45,9 +45,9 @@ function clearImgMarkup() {
     refs.galleryRef.innerHTML = '';
 }
 
-const imgScroll = (h) => {
+const imgScroll = (event) => {
     const totalHeight = document.documentElement.clientHeight * imagesApiService.page;
-    let i = h || 0;
+    i = event || 0;
     if (i < totalHeight) {
         setTimeout(() => {
             window.scrollTo(0, i);
@@ -55,7 +55,7 @@ const imgScroll = (h) => {
   behavior: 'smooth'
 });
             imgScroll(i + 12);
-        }, 12)
+        }, 24)
     }
 }
 loadMoreBtn.refs.button.addEventListener('click', () => imgScroll());
