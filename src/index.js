@@ -18,10 +18,10 @@ loadMoreBtn.refs.button.addEventListener('click', fetchHits);
 function onSearch(event) {
     event.preventDefault();
     imagesApiService.query = event.currentTarget.elements.query.value;
-    clearimgMarkup();
+    clearImgMarkup();
     loadMoreBtn.show();
     imagesApiService.resetPage();
-    clearimgMarkup();
+    clearImgMarkup();
     fetchHits();
 
     if (imagesApiService.query === '') {
@@ -41,7 +41,7 @@ function imgMarkup(hits) {
 refs.galleryRef.insertAdjacentHTML('beforeend', imgCard(hits));
 }
 
-function clearimgMarkup() {
+function clearImgMarkup() {
     refs.galleryRef.innerHTML = '';
 }
 

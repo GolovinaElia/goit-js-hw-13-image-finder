@@ -5,7 +5,6 @@ export default class ImagesApiService {
     constructor() {
         this.searchQuery = '';
         this.page = 1;
-        this.hits = [];
     }
      fetchImages() {
     const url = `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${API_KEY}`;
