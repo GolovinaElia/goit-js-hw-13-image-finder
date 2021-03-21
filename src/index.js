@@ -5,6 +5,9 @@ import getRefs from './js/get-refs';
 import imgCard from './templates/card-img.hbs';
 import LoadMoreBtn from './js/load-btn';
 
+// import '@pnotify/core/dist/BrightTheme.css';
+// import { error } from '@pnotify/core';
+
 const imagesApiService = new ImagesApiService();
 const refs = getRefs();
 const loadMoreBtn = new LoadMoreBtn({
@@ -18,15 +21,14 @@ loadMoreBtn.refs.button.addEventListener('click', fetchHits);
 function onSearch(event) {
     event.preventDefault();
     imagesApiService.query = event.currentTarget.elements.query.value;
-    clearImgMarkup();
-    loadMoreBtn.show();
-    imagesApiService.resetPage();
-    clearImgMarkup();
-    fetchHits();
 
     if (imagesApiService.query === '') {
         return alert('Please enter your request');
 }
+    loadMoreBtn.show();
+    imagesApiService.resetPage();
+    clearImgMarkup();
+    fetchHits();
 };
 
 function fetchHits() {
@@ -47,13 +49,10 @@ function clearImgMarkup() {
 
 const imgScroll = (event) => {
     const totalHeight = document.documentElement.clientHeight * imagesApiService.page;
-    i = event || 0;
+   let i = event || 0;
     if (i < totalHeight) {
         setTimeout(() => {
             window.scrollTo(0, i);
-            window.scrollTo({
-  behavior: 'smooth'
-});
             imgScroll(i + 12);
         }, 24)
     }
