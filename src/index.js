@@ -3,41 +3,28 @@ import './styles.css';
 import ImagesApiService from './js/apiService';
 import getRefs from './js/get-refs';
 import imgCard from './templates/card-img.hbs';
-import LoadMoreBtn from './js/load-btn';
-
-// import '@pnotify/core/dist/BrightTheme.css';
-// import { error } from '@pnotify/core';
 
 const imagesApiService = new ImagesApiService();
 const refs = getRefs();
-const loadMoreBtn = new LoadMoreBtn({
-    selector: '[data-action="load-more"]',
-    hidden: true
-});
+
 
 refs.inputRef.addEventListener('input', onSearch);
-loadMoreBtn.refs.button.addEventListener('click', fetchHits);
 
 function onSearch(event) {
     event.preventDefault();
     imagesApiService.query = event.currentTarget.elements.query.value;
 
     if (imagesApiService.query === '') {
-        return alert('Please enter your request');
+        return alert ('Please enter your request');
 }
-    loadMoreBtn.show();
+
     imagesApiService.resetPage();
     clearImgMarkup();
-    fetchHits();
-};
-
-function fetchHits() {
- loadMoreBtn.disable();
     imagesApiService.fetchImages().then(hits => {
         imgMarkup(hits);
-        loadMoreBtn.enable();
+        imagesApiService.incrementPage();
     });
-};
+}
 
 function imgMarkup(hits) {
 refs.galleryRef.insertAdjacentHTML('beforeend', imgCard(hits));
@@ -48,13 +35,36 @@ function clearImgMarkup() {
 }
 
 const imgScroll = (event) => {
-    const totalHeight = document.documentElement.clientHeight * imagesApiService.page;
-   let i = event || 0;
-    if (i < totalHeight) {
-        setTimeout(() => {
-            window.scrollTo(0, i);
-            imgScroll(i + 12);
-        }, 24)
-    }
+//     const totalHeight = document.documentElement.clientHeight * imagesApiService.page;
+//    let i = event || 0;
+//     if (i < totalHeight) {
+//         window.scrollTo(0, i)
+//             window.scrollTo({
+//   behavior: 'smooth'
+// });
+
+//             imgScroll(i + 12);
+      
+//     }
+    window.scrollTo({
+        top: 0,
+  behavior: 'smooth'
+});
 }
-loadMoreBtn.refs.button.addEventListener('click', () => imgScroll());
+refs.btnRef.addEventListener('click', () => imgScroll());
+
+const onEntry = entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && imagesApiService.query === '') {
+            imagesApiService.fetchImages().then(hits => {
+        imgMarkup(hits);
+        imagesApiService.incrementPage();
+    });
+        }
+    })
+}
+const options = {
+    rootMargin: '200px'
+};
+const observer = new IntersectionObserver(onEntry, options);
+observer.observe(refs.scrollRef);
