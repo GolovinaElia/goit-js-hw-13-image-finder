@@ -12,9 +12,9 @@ export default class ImagesApiService {
     return fetch(url)
         .then(response => response.json())
         .then(({ hits }) => {
-            if (imagesApiService.query === '') {
+            if (this.query === '') {
                 return;
-           }
+           } else
             this.incrementPage();
             return hits;
         })
