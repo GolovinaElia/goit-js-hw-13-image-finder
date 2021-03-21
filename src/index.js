@@ -1,5 +1,4 @@
 import './styles.css';
-
 import ImagesApiService from './js/apiService';
 import getRefs from './js/get-refs';
 import imgCard from './templates/card-img.hbs';
@@ -7,8 +6,8 @@ import imgCard from './templates/card-img.hbs';
 const imagesApiService = new ImagesApiService();
 const refs = getRefs();
 
-
 refs.inputRef.addEventListener('input', onSearch);
+refs.btnRef.addEventListener('click', imgScroll);
 
 function onSearch(event) {
     event.preventDefault();
@@ -30,13 +29,12 @@ function clearImgMarkup() {
     refs.galleryRef.innerHTML = '';
 }
 
-const imgScroll = () => {
+function imgScroll() {
     window.scrollTo({
         top: 0,
   behavior: 'smooth'
 });
 }
-refs.btnRef.addEventListener('click', () => imgScroll());
 
 const onEntry = entries => {
     entries.forEach(entry => {
