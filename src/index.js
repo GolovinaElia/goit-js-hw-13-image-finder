@@ -6,6 +6,7 @@ import imgCard from './templates/card-img.hbs';
 const imagesApiService = new ImagesApiService();
 const refs = getRefs();
 
+
 refs.inputRef.addEventListener('input', onSearch);
 refs.btnRef.addEventListener('click', imgScroll);
 
