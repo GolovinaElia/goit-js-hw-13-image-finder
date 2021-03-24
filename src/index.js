@@ -13,7 +13,6 @@ refs.btnRef.addEventListener('click', imgScroll);
 function onSearch(event) {
     event.preventDefault();
     imagesApiService.query = event.currentTarget.elements.query.value;
-
     imagesApiService.resetPage();
     clearImgMarkup();
     imagesApiService.fetchImages().then(hits => {
@@ -38,7 +37,7 @@ function imgScroll() {
 }
 
 const onEntry = entries => {
-    entries.forEach(entry => {
+    entries.some(entry => {
         if (entry.isIntersecting) {
             imagesApiService.fetchImages().then(hits => {
         imgMarkup(hits);
